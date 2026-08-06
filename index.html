@@ -1,339 +1,515 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
-    <meta name="description" content="SumNova by Davonium Technologies. AI-powered study assistant to help you learn faster and understand better.">
-    
-    <title>SumNova - Learn Faster. Understand Better.</title>
-
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
-    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+<meta name="description" content="SumNova by Davonium Technologies. Learn Faster. Understand Better. An AI-powered study assistant SaaS platform to summarize, understand, organize, and process information.">
+<meta name="author" content="Davonium Technologies">
+<title>SumNova | Learn Faster. Understand Better.</title>
+<!-- PWA & Icons -->
+<link rel="icon" href="assets/logos/sumnova-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="global-loading-screen" role="alert" aria-busy="true" aria-label="Application is loading">
-        <div class="spinner"></div>
-    </div>
-
-    <div id="global-notification-center" aria-live="polite" aria-atomic="true">
-        <div class="toast-container"></div>
-    </div>
-
-    <div id="global-modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal-content" id="modal-content-container"></div>
-    </div>
-
-    <div id="app-shell">
-        <header id="app-header">
-            <div class="header-container">
-                <div class="brand">
-                    <img src="assets/logos/sumnova-logo.png" alt="SumNova Logo" class="brand-logo">
-                    <span class="brand-name">SumNova</span>
-                </div>
-
-                <nav class="public-nav" aria-label="Public Navigation">
-                    <ul class="nav-list">
-                        <li><a href="#home" data-route="landing">Home</a></li>
-                        <li><a href="#about" data-route="about">About</a></li>
-                        <li><a href="#help" data-route="help">Help</a></li>
-                    </ul>
-                    <div class="nav-actions">
-                        <button id="btn-theme-toggle-public" aria-label="Toggle Theme">Theme</button>
-                        <button id="btn-nav-login" data-route="login">Login</button>
-                        <button id="btn-nav-get-started" data-route="signup" class="btn-primary">Get Started</button>
-                    </div>
-                </nav>
-
-                <nav class="auth-nav hidden" aria-label="Authenticated Navigation" aria-hidden="true">
-                    <ul class="nav-list">
-                        <li><a href="#dashboard" data-route="dashboard">Dashboard</a></li>
-                        <li><a href="#workspace" data-route="workspace">Workspace</a></li>
-                        <li><a href="#history" data-route="history">History</a></li>
-                        <li><a href="#saved" data-route="saved">Saved Summaries</a></li>
-                    </ul>
-                    <div class="nav-actions">
-                        <button id="btn-theme-toggle-auth" aria-label="Toggle Theme">Theme</button>
-                        <div class="user-menu-container">
-                            <button id="btn-user-menu" aria-haspopup="true" aria-expanded="false" aria-label="User Menu">Profile</button>
-                            <ul id="user-menu-dropdown" class="dropdown-menu hidden" role="menu">
-                                <li role="none"><a href="#profile" data-route="profile" role="menuitem">Profile</a></li>
-                                <li role="none"><a href="#settings" data-route="settings" role="menuitem">Settings</a></li>
-                                <li role="none"><button id="btn-logout" role="menuitem">Logout</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <main id="app-main">
-            <section id="view-landing" class="route-view" aria-labelledby="landing-title">
-                <div class="hero-section">
-                    <h1 id="landing-title">Learn Faster. Understand Better.</h1>
-                    <p>Your AI-powered study assistant for instant summarization and learning enhancement.</p>
-                    <button class="btn-primary" data-route="signup">Start Learning Now</button>
-                </div>
-                <div class="features-section">
-                    <h2>Key Features</h2>
-                    <div class="feature-grid"></div>
-                </div>
-                <div class="how-it-works-section">
-                    <h2>How It Works</h2>
-                    <div class="steps-container"></div>
-                </div>
-                <div class="cta-section">
-                    <h2>Ready to transform your study habits?</h2>
-                    <button class="btn-primary" data-route="signup">Join SumNova</button>
-                </div>
-            </section>
-
-            <section id="view-login" class="route-view hidden" aria-labelledby="login-title" aria-hidden="true">
-                <div class="auth-container">
-                    <h1 id="login-title">Welcome Back</h1>
-                    <form id="form-login" novalidate>
-                        <div class="form-group">
-                            <label for="login-email">Email Address</label>
-                            <input type="email" id="login-email" name="email" required autocomplete="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="login-password">Password</label>
-                            <input type="password" id="login-password" name="password" required autocomplete="current-password">
-                        </div>
-                        <div class="form-actions">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="login-remember" name="remember">
-                                <label for="login-remember">Remember me</label>
-                            </div>
-                            <a href="#forgot-password" data-route="forgot-password">Forgot password?</a>
-                        </div>
-                        <button type="submit" class="btn-primary btn-block">Log In</button>
-                    </form>
-                </div>
-            </section>
-
-            <section id="view-signup" class="route-view hidden" aria-labelledby="signup-title" aria-hidden="true">
-                <div class="auth-container">
-                    <h1 id="signup-title">Create an Account</h1>
-                    <form id="form-signup" novalidate>
-                        <div class="form-group">
-                            <label for="signup-name">Full Name</label>
-                            <input type="text" id="signup-name" name="name" required autocomplete="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="signup-email">Email Address</label>
-                            <input type="email" id="signup-email" name="email" required autocomplete="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="signup-password">Password</label>
-                            <input type="password" id="signup-password" name="password" required autocomplete="new-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="signup-confirm-password">Confirm Password</label>
-                            <input type="password" id="signup-confirm-password" name="confirm-password" required autocomplete="new-password">
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="signup-terms" name="terms" required>
-                            <label for="signup-terms">I agree to the Terms of Service and Privacy Policy</label>
-                        </div>
-                        <button type="submit" class="btn-primary btn-block">Sign Up</button>
-                    </form>
-                </div>
-            </section>
-
-            <section id="view-forgot-password" class="route-view hidden" aria-labelledby="forgot-password-title" aria-hidden="true">
-                <div class="auth-container">
-                    <h1 id="forgot-password-title">Reset Password</h1>
-                    <p>Enter your email and we will send you a link to reset your password.</p>
-                    <form id="form-forgot-password" novalidate>
-                        <div class="form-group">
-                            <label for="forgot-email">Email Address</label>
-                            <input type="email" id="forgot-email" name="email" required autocomplete="email">
-                        </div>
-                        <button type="submit" class="btn-primary btn-block">Send Reset Link</button>
-                    </form>
-                </div>
-            </section>
-
-            <section id="view-verify-email" class="route-view hidden" aria-labelledby="verify-email-title" aria-hidden="true">
-                <div class="auth-container">
-                    <h1 id="verify-email-title">Verify Your Email</h1>
-                    <p>Please check your inbox and click the verification link to continue.</p>
-                    <button id="btn-resend-verification" class="btn-secondary">Resend Email</button>
-                </div>
-            </section>
-
-            <section id="view-dashboard" class="route-view hidden" aria-labelledby="dashboard-title" aria-hidden="true">
-                <div class="dashboard-layout">
-                    <h1 id="dashboard-title">Dashboard</h1>
-                    <div class="welcome-section" id="dashboard-welcome"></div>
-                    <div class="quick-actions">
-                        <button class="btn-primary" data-route="workspace">New Workspace Session</button>
-                    </div>
-                    <div class="usage-statistics" id="dashboard-stats"></div>
-                    <div class="recent-activity">
-                        <h2>Recent Activity</h2>
-                        <ul id="dashboard-recent-list"></ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-workspace" class="route-view hidden" aria-labelledby="workspace-title" aria-hidden="true">
-                <div class="workspace-layout">
-                    <h1 id="workspace-title" class="sr-only">AI Workspace</h1>
-                    
-                    <div class="workspace-sidebar">
-                        <fieldset class="ai-task-selection">
-                            <legend>Select AI Task</legend>
-                            <div class="radio-group">
-                                <input type="radio" id="task-summary" name="ai-task" value="summary" checked>
-                                <label for="task-summary">Summary</label>
-                            </div>
-                            <div class="radio-group">
-                                <input type="radio" id="task-explanation" name="ai-task" value="explanation">
-                                <label for="task-explanation">Explanation</label>
-                            </div>
-                            <div class="radio-group">
-                                <input type="radio" id="task-study-guide" name="ai-task" value="study-guide">
-                                <label for="task-study-guide">Study Guide</label>
-                            </div>
-                            <div class="radio-group">
-                                <input type="radio" id="task-key-points" name="ai-task" value="key-points">
-                                <label for="task-key-points">Key Points</label>
-                            </div>
-                            <div class="radio-group">
-                                <input type="radio" id="task-analysis" name="ai-task" value="analysis">
-                                <label for="task-analysis">Analysis</label>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <div class="workspace-main">
-                        <div class="workspace-input-area" id="workspace-input-section">
-                            <div class="input-tabs" role="tablist">
-                                <button role="tab" aria-selected="true" aria-controls="input-text" id="tab-text">Text</button>
-                                <button role="tab" aria-selected="false" aria-controls="input-document" id="tab-document">Document</button>
-                                <button role="tab" aria-selected="false" aria-controls="input-url" id="tab-url">URL</button>
-                            </div>
-                            <div class="tab-content" id="input-text" role="tabpanel" aria-labelledby="tab-text">
-                                <label for="ai-text-input" class="sr-only">Paste or type text</label>
-                                <textarea id="ai-text-input" placeholder="Paste your text here..."></textarea>
-                            </div>
-                            <div class="tab-content hidden" id="input-document" role="tabpanel" aria-labelledby="tab-document" aria-hidden="true">
-                                <label for="ai-file-upload" class="sr-only">Upload Document</label>
-                                <input type="file" id="ai-file-upload" accept=".pdf,.doc,.docx,.txt">
-                            </div>
-                            <div class="tab-content hidden" id="input-url" role="tabpanel" aria-labelledby="tab-url" aria-hidden="true">
-                                <label for="ai-url-input" class="sr-only">Enter Web URL</label>
-                                <input type="url" id="ai-url-input" placeholder="https://example.com/article">
-                            </div>
-                            <button id="btn-process-ai" class="btn-primary">Generate</button>
-                        </div>
-
-                        <div class="workspace-processing-area hidden" id="workspace-processing-section" aria-hidden="true">
-                            <div class="processing-indicator">
-                                <div class="spinner"></div>
-                                <p>AI is analyzing your content...</p>
-                            </div>
-                        </div>
-
-                        <div class="workspace-result-area hidden" id="workspace-result-section" aria-live="polite" aria-hidden="true">
-                            <div class="result-content" id="ai-result-output"></div>
-                            <div class="result-actions">
-                                <button id="btn-result-copy" aria-label="Copy to clipboard">Copy</button>
-                                <button id="btn-result-save" aria-label="Save summary">Save</button>
-                                <button id="btn-result-export" aria-label="Export document">Export</button>
-                                <button id="btn-result-delete" aria-label="Delete result" class="btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-history" class="route-view hidden" aria-labelledby="history-title" aria-hidden="true">
-                <div class="container">
-                    <h1 id="history-title">Session History</h1>
-                    <div id="history-list-container" class="data-grid"></div>
-                </div>
-            </section>
-
-            <section id="view-saved" class="route-view hidden" aria-labelledby="saved-title" aria-hidden="true">
-                <div class="container">
-                    <h1 id="saved-title">Saved Summaries</h1>
-                    <div id="saved-list-container" class="data-grid"></div>
-                </div>
-            </section>
-
-            <section id="view-profile" class="route-view hidden" aria-labelledby="profile-title" aria-hidden="true">
-                <div class="container form-layout">
-                    <h1 id="profile-title">User Profile</h1>
-                    <div class="user-info-display" id="profile-info-section"></div>
-                    <form id="form-profile-settings">
-                        <div class="form-group">
-                            <label for="profile-name">Display Name</label>
-                            <input type="text" id="profile-name" name="name">
-                        </div>
-                        <button type="submit" class="btn-primary">Update Profile</button>
-                    </form>
-                </div>
-            </section>
-
-            <section id="view-settings" class="route-view hidden" aria-labelledby="settings-title" aria-hidden="true">
-                <div class="container form-layout">
-                    <h1 id="settings-title">Account Settings</h1>
-                    <div class="settings-group">
-                        <h2>Preferences</h2>
-                        <div class="form-group">
-                            <label for="setting-theme">Application Theme</label>
-                            <select id="setting-theme" name="theme">
-                                <option value="system">System Default</option>
-                                <option value="light">Light</option>
-                                <option value="dark">Dark</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="settings-group">
-                        <h2>Notifications</h2>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="setting-notify-email" name="notify-email">
-                            <label for="setting-notify-email">Email Notifications</label>
-                        </div>
-                    </div>
-                    <div class="settings-group">
-                        <h2>Security</h2>
-                        <button id="btn-change-password" class="btn-secondary">Change Password</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer id="app-footer">
-            <div class="footer-container">
-                <div class="footer-company-info">
-                    <p>&copy; <span id="copyright-year"></span> Davonium Technologies. All rights reserved.</p>
-                </div>
-                <nav class="footer-links" aria-label="Footer Navigation">
-                    <ul>
-                        <li><a href="#privacy-policy">Privacy Policy</a></li>
-                        <li><a href="#terms-of-service">Terms of Service</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </footer>
-    </div>
-
-    <script src="js/app.js" defer></script>
-    <script src="js/router.js" defer></script>
-    <script src="js/ui.js" defer></script>
-    <script src="js/auth.js" defer></script>
-    <script src="js/firestore.js" defer></script>
-    <script src="js/ai.js" defer></script>
-    <script src="js/settings.js" defer></script>
+<!-- GLOBAL CONTAINERS -->
+<div id="global-loading-screen" role="alert" aria-live="assertive" aria-busy="true" class="active">
+<div class="loading-spinner"></div>
+<p>Loading SumNova...</p>
+</div>
+<div id="global-notification-center" role="region" aria-label="Notifications" aria-live="polite">
+<div id="toast-container" class="toast-container"></div>
+</div>
+<div id="global-modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="modal-content-wrapper" id="modal-content-wrapper">
+<!-- Modal content injected via JS -->
+</div>
+</div>
+<!-- APPLICATION SHELL -->
+<div id="application-shell">
+<!-- HEADER ARCHITECTURE -->
+<header id="app-header" role="banner">
+<div class="header-container">
+<div class="brand-container">
+<img src="assets/logos/sumnova-logo.png" alt="SumNova Logo" class="brand-logo" id="header-logo">
+<span class="brand-name">SumNova</span>
+</div>
+<!-- PUBLIC NAVIGATION -->
+<nav id="nav-public" class="navigation-module" aria-label="Public Navigation">
+<ul class="desktop-nav">
+<li><a href="#home" class="nav-link" data-route="home">Home</a></li>
+<li><a href="#about" class="nav-link" data-route="about">About</a></li>
+<li><a href="#help" class="nav-link" data-route="help">Help</a></li>
+</ul>
+<div class="nav-actions">
+<button id="btn-theme-toggle-public" class="btn-theme-toggle" aria-label="Toggle dark mode" type="button">
+<span class="theme-icon"></span>
+</button>
+<button id="btn-nav-login" class="btn-secondary" data-route="login" type="button">Login</button>
+<button id="btn-nav-get-started" class="btn-primary" data-route="signup" type="button">Get Started</button>
+</div>
+</nav>
+<!-- AUTHENTICATED NAVIGATION -->
+<nav id="nav-authenticated" class="navigation-module hidden" aria-label="User Navigation">
+<ul class="desktop-nav">
+<li><a href="#dashboard" class="nav-link" data-route="dashboard">Dashboard</a></li>
+<li><a href="#workspace" class="nav-link" data-route="workspace">Workspace</a></li>
+<li><a href="#history" class="nav-link" data-route="history">History</a></li>
+<li><a href="#saved-summaries" class="nav-link" data-route="saved-summaries">Saved Summaries</a></li>
+</ul>
+<div class="nav-actions">
+<button id="btn-theme-toggle-auth" class="btn-theme-toggle" aria-label="Toggle dark mode" type="button">
+<span class="theme-icon"></span>
+</button>
+<div id="user-menu-dropdown" class="dropdown-container">
+<button id="btn-user-menu" aria-haspopup="true" aria-expanded="false" aria-label="User Menu" type="button">
+<img id="user-avatar" src="assets/icons/icon-192.png" alt="User Profile">
+</button>
+<ul class="dropdown-menu" id="user-dropdown-menu" role="menu">
+<li role="none"><a href="#profile" role="menuitem" data-route="profile">Profile</a></li>
+<li role="none"><a href="#settings" role="menuitem" data-route="settings">Settings</a></li>
+<li role="none" class="divider"></li>
+<li role="none"><button id="btn-logout" role="menuitem" type="button">Logout</button></li>
+</ul>
+</div>
+</div>
+</nav>
+<!-- MOBILE NAVIGATION TOGGLE -->
+<button id="btn-mobile-menu-toggle" aria-label="Open mobile menu" aria-expanded="false" aria-controls="mobile-nav-panel" type="button">
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+</button>
+</div>
+<!-- MOBILE NAVIGATION PANEL -->
+<div id="mobile-nav-panel" class="mobile-menu hidden" aria-hidden="true">
+<!-- Mobile links injected/toggled via JS based on auth state -->
+<ul id="mobile-nav-list"></ul>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main id="app-main-content" role="main">
+<!-- ==========================================
+PUBLIC VIEWS 
+=========================================== -->
+<!-- Landing Page -->
+<section id="view-landing" class="app-view active" aria-labelledby="landing-title">
+<div class="hero-section">
+<h1 id="landing-title">Learn Faster. Understand Better.</h1>
+<p class="hero-subtitle">SumNova by Davonium Technologies is your premier AI-powered study assistant.</p>
+<div class="hero-cta">
+<button id="btn-hero-start" class="btn-primary btn-large" data-route="signup" type="button">Start for Free</button>
+<button id="btn-hero-learn" class="btn-secondary btn-large" data-route="about" type="button">How It Works</button>
+</div>
+</div>
+<div class="features-section" id="landing-features">
+<h2>Platform Features</h2>
+<div class="grid-container">
+<article class="feature-card">
+<h3>Smart Summarization</h3>
+<p>Distill complex articles, papers, and books into digestible summaries.</p>
+</article>
+<article class="feature-card">
+<h3>Deep Explanation</h3>
+<p>Get intuitive breakdowns of difficult concepts tailored to your level.</p>
+</article>
+<article class="feature-card">
+<h3>Automated Study Guides</h3>
+<p>Generate comprehensive study materials from raw notes instantly.</p>
+</article>
+</div>
+</div>
+<div class="how-it-works-section" id="landing-how-it-works">
+<h2>How SumNova Works</h2>
+<ol class="step-list">
+<li><strong>Input:</strong> Paste text, upload documents, or provide a URL.</li>
+<li><strong>Process:</strong> Select your AI task (Summarize, Explain, Analyze).</li>
+<li><strong>Learn:</strong> Review, save, and export your processed knowledge.</li>
+</ol>
+</div>
+<div class="benefits-section" id="landing-benefits">
+<h2>Why Choose SumNova?</h2>
+<p>Designed for students, researchers, educators, and professionals seeking to maximize productivity and comprehension without sacrificing depth.</p>
+</div>
+<div class="final-cta-section">
+<h2>Ready to supercharge your learning?</h2>
+<button class="btn-primary btn-large" data-route="signup" type="button">Get Started Now</button>
+</div>
+</section>
+<!-- Login View -->
+<section id="view-login" class="app-view hidden" aria-labelledby="login-title">
+<div class="auth-container">
+<h1 id="login-title">Welcome Back</h1>
+<form id="form-login" class="auth-form" novalidate>
+<div class="form-group">
+<label for="login-email">Email Address</label>
+<input type="email" id="login-email" name="email" required autocomplete="email">
+</div>
+<div class="form-group">
+<label for="login-password">Password</label>
+<input type="password" id="login-password" name="password" required autocomplete="current-password">
+</div>
+<div class="form-actions-row">
+<label class="checkbox-label">
+<input type="checkbox" id="login-remember" name="remember">
+Remember me
+</label>
+<a href="#forgot-password" data-route="forgot-password" class="text-link">Forgot password?</a>
+</div>
+<button type="submit" id="btn-submit-login" class="btn-primary btn-full">Login</button>
+</form>
+<p class="auth-footer">Don't have an account? <a href="#signup" data-route="signup">Sign up</a></p>
+</div>
+</section>
+<!-- Signup View -->
+<section id="view-signup" class="app-view hidden" aria-labelledby="signup-title">
+<div class="auth-container">
+<h1 id="signup-title">Create your SumNova Account</h1>
+<form id="form-signup" class="auth-form" novalidate>
+<div class="form-group">
+<label for="signup-name">Full Name</label>
+<input type="text" id="signup-name" name="name" required autocomplete="name">
+</div>
+<div class="form-group">
+<label for="signup-email">Email Address</label>
+<input type="email" id="signup-email" name="email" required autocomplete="email">
+</div>
+<div class="form-group">
+<label for="signup-password">Password</label>
+<input type="password" id="signup-password" name="password" required autocomplete="new-password">
+</div>
+<div class="form-group">
+<label for="signup-confirm-password">Confirm Password</label>
+<input type="password" id="signup-confirm-password" name="confirm-password" required autocomplete="new-password">
+</div>
+<div class="form-group checkbox-group">
+<label class="checkbox-label">
+<input type="checkbox" id="signup-terms" name="terms" required>
+I agree to the <a href="#terms-of-service" data-route="terms-of-service">Terms of Service</a> and <a href="#privacy-policy" data-route="privacy-policy">Privacy Policy</a>
+</label>
+</div>
+<button type="submit" id="btn-submit-signup" class="btn-primary btn-full">Sign Up</button>
+</form>
+</div>
+</section>
+<!-- Forgot Password View -->
+<section id="view-forgot-password" class="app-view hidden" aria-labelledby="forgot-password-title">
+<div class="auth-container">
+<h1 id="forgot-password-title">Reset Password</h1>
+<p>Enter your email and we will send you a link to reset your password.</p>
+<form id="form-forgot-password" class="auth-form" novalidate>
+<div class="form-group">
+<label for="forgot-email">Email Address</label>
+<input type="email" id="forgot-email" name="email" required>
+</div>
+<button type="submit" id="btn-submit-forgot" class="btn-primary btn-full">Send Reset Link</button>
+</form>
+<p class="auth-footer"><a href="#login" data-route="login">Back to Login</a></p>
+</div>
+</section>
+<!-- Verify Email View -->
+<section id="view-verify-email" class="app-view hidden" aria-labelledby="verify-email-title">
+<div class="auth-container text-center">
+<h1 id="verify-email-title">Verify Your Email</h1>
+<p>We've sent a verification link to your email address. Please check your inbox.</p>
+<button id="btn-resend-verification" class="btn-secondary" type="button">Resend Email</button>
+</div>
+</section>
+<!-- About View -->
+<section id="view-about" class="app-view hidden" aria-labelledby="about-title">
+<div class="content-container">
+<h1 id="about-title">About SumNova</h1>
+<p>Developed by <strong>Davonium Technologies</strong>, SumNova bridges the gap between raw data and true comprehension.</p>
+</div>
+</section>
+<!-- Contact View -->
+<section id="view-contact" class="app-view hidden" aria-labelledby="contact-title">
+<div class="content-container">
+<h1 id="contact-title">Contact Us</h1>
+<form id="form-contact" class="standard-form">
+<div class="form-group">
+<label for="contact-name">Name</label>
+<input type="text" id="contact-name" name="name" required>
+</div>
+<div class="form-group">
+<label for="contact-email">Email</label>
+<input type="email" id="contact-email" name="email" required>
+</div>
+<div class="form-group">
+<label for="contact-message">Message</label>
+<textarea id="contact-message" name="message" rows="5" required></textarea>
+</div>
+<button type="submit" id="btn-submit-contact" class="btn-primary">Send Message</button>
+</form>
+</div>
+</section>
+<!-- Help View -->
+<section id="view-help" class="app-view hidden" aria-labelledby="help-title">
+<div class="content-container">
+<h1 id="help-title">Help & Support</h1>
+<div id="faq-container">
+<!-- FAQs populated dynamically -->
+</div>
+</div>
+</section>
+<!-- Privacy Policy View -->
+<section id="view-privacy-policy" class="app-view hidden" aria-labelledby="privacy-title">
+<div class="content-container legal-document">
+<h1 id="privacy-title">Privacy Policy</h1>
+<p>Effective Date: [Dynamic Date]</p>
+<!-- Content placeholder -->
+</div>
+</section>
+<!-- Terms of Service View -->
+<section id="view-terms-of-service" class="app-view hidden" aria-labelledby="terms-title">
+<div class="content-container legal-document">
+<h1 id="terms-title">Terms of Service</h1>
+<p>Effective Date: [Dynamic Date]</p>
+<!-- Content placeholder -->
+</div>
+</section>
+<!-- ==========================================
+AUTHENTICATED VIEWS 
+=========================================== -->
+<!-- Dashboard View -->
+<section id="view-dashboard" class="app-view hidden" aria-labelledby="dashboard-title">
+<div class="dashboard-container">
+<header class="dashboard-header">
+<h1 id="dashboard-title">Welcome back, <span id="dashboard-user-name">User</span></h1>
+</header>
+<div class="dashboard-grid">
+<section class="dashboard-card quick-actions" aria-labelledby="quick-actions-title">
+<h2 id="quick-actions-title">Quick Actions</h2>
+<button class="btn-primary" data-route="workspace" type="button">+ New Workspace Session</button>
+</section>
+<section class="dashboard-card usage-stats" aria-labelledby="usage-stats-title">
+<h2 id="usage-stats-title">Usage Statistics</h2>
+<div id="stats-container">
+<!-- Stats injected via JS -->
+</div>
+</section>
+<section class="dashboard-card recent-activity" aria-labelledby="recent-activity-title">
+<h2 id="recent-activity-title">Recent Activity</h2>
+<ul id="recent-activity-list" class="activity-list">
+<!-- Activity injected via JS -->
+</ul>
+</section>
+</div>
+</div>
+</section>
+<!-- Workspace View (Core Feature) -->
+<section id="view-workspace" class="app-view hidden" aria-labelledby="workspace-title">
+<div class="workspace-container">
+<header class="workspace-header">
+<h1 id="workspace-title">Workspace</h1>
+<p class="workspace-subtitle">Input your content and select an AI task.</p>
+</header>
+<div class="workspace-layout">
+<!-- Left Panel: Input & Settings -->
+<div class="workspace-controls-panel">
+<!-- Input Methods -->
+<div class="input-methods-container">
+<div class="tabs" role="tablist" aria-label="Input Methods">
+<button role="tab" aria-selected="true" aria-controls="panel-text" id="tab-text" class="tab-btn active" type="button">Text</button>
+<button role="tab" aria-selected="false" aria-controls="panel-upload" id="tab-upload" class="tab-btn" type="button">Upload</button>
+<button role="tab" aria-selected="false" aria-controls="panel-url" id="tab-url" class="tab-btn" type="button">URL</button>
+</div>
+<div id="panel-text" role="tabpanel" aria-labelledby="tab-text" class="tab-panel active">
+<label for="workspace-text-input" class="visually-hidden">Text Input</label>
+<textarea id="workspace-text-input" placeholder="Paste your text here..." rows="10"></textarea>
+</div>
+<div id="panel-upload" role="tabpanel" aria-labelledby="tab-upload" class="tab-panel hidden">
+<label for="workspace-file-upload" class="visually-hidden">Document Upload</label>
+<div class="file-upload-area" id="file-drop-zone">
+<input type="file" id="workspace-file-upload" accept=".txt,.pdf,.doc,.docx" class="hidden-input">
+<p>Drag & drop a document here, or click to browse.</p>
+</div>
+</div>
+<div id="panel-url" role="tabpanel" aria-labelledby="tab-url" class="tab-panel hidden">
+<label for="workspace-url-input">Enter Article or Document URL:</label>
+<input type="url" id="workspace-url-input" placeholder="[https://example.com/article](https://example.com/article)">
+</div>
+</div>
+<!-- AI Task Options -->
+<div class="ai-task-options">
+<h2>Select Task</h2>
+<div class="radio-group" role="radiogroup" aria-label="AI Tasks">
+<label class="radio-label">
+<input type="radio" name="ai-task" value="summarize" checked> Summarize
+</label>
+<label class="radio-label">
+<input type="radio" name="ai-task" value="explain"> Explain
+</label>
+<label class="radio-label">
+<input type="radio" name="ai-task" value="study-guide"> Study Guide
+</label>
+<label class="radio-label">
+<input type="radio" name="ai-task" value="key-points"> Key Points
+</label>
+<label class="radio-label">
+<input type="radio" name="ai-task" value="analysis"> Analysis
+</label>
+</div>
+</div>
+<button id="btn-generate" class="btn-primary btn-large generate-btn" type="button">Generate</button>
+</div>
+<!-- Right Panel: Results -->
+<div class="workspace-results-panel" aria-live="polite">
+<div id="workspace-loading-state" class="hidden">
+<div class="spinner"></div>
+<p>Processing with SumNova AI...</p>
+</div>
+<div id="workspace-result-area" class="result-area empty">
+<div class="result-placeholder" id="result-placeholder">
+<p>Your results will appear here.</p>
+</div>
+<div class="result-content-wrapper hidden" id="result-content-wrapper">
+<div id="ai-output-content" class="ai-content"></div>
+<div class="result-actions">
+<button id="btn-copy-result" class="btn-icon" aria-label="Copy to clipboard" type="button">Copy</button>
+<button id="btn-save-result" class="btn-icon" aria-label="Save summary" type="button">Save</button>
+<button id="btn-export-result" class="btn-icon" aria-label="Export as PDF" type="button">Export</button>
+<button id="btn-delete-result" class="btn-icon btn-danger" aria-label="Clear result" type="button">Delete</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- History View -->
+<section id="view-history" class="app-view hidden" aria-labelledby="history-title">
+<div class="content-container">
+<h1 id="history-title">Session History</h1>
+<div id="history-list-container" class="data-list-container">
+<!-- Populated by JS -->
+<p class="empty-state">No previous sessions found.</p>
+</div>
+</div>
+</section>
+<!-- Saved Summaries View -->
+<section id="view-saved-summaries" class="app-view hidden" aria-labelledby="saved-summaries-title">
+<div class="content-container">
+<h1 id="saved-summaries-title">Saved Summaries</h1>
+<div class="controls-bar">
+<input type="search" id="search-saved" placeholder="Search summaries..." aria-label="Search saved summaries">
+<select id="filter-saved" aria-label="Filter summaries">
+<option value="all">All</option>
+<option value="summarize">Summaries</option>
+<option value="study-guide">Study Guides</option>
+</select>
+</div>
+<div id="saved-list-container" class="data-grid-container">
+<!-- Populated by JS -->
+<p class="empty-state">You haven't saved any results yet.</p>
+</div>
+</div>
+</section>
+<!-- Profile View -->
+<section id="view-profile" class="app-view hidden" aria-labelledby="profile-title">
+<div class="content-container form-container">
+<h1 id="profile-title">User Profile</h1>
+<form id="form-profile" class="standard-form">
+<div class="profile-avatar-section">
+<img id="profile-view-avatar" src="assets/icons/icon-192.png" alt="Profile Avatar">
+<button id="btn-change-avatar" class="btn-secondary btn-small" type="button">Change Avatar</button>
+</div>
+<div class="form-group">
+<label for="profile-display-name">Display Name</label>
+<input type="text" id="profile-display-name" name="displayName">
+</div>
+<div class="form-group">
+<label for="profile-email">Email Address</label>
+<input type="email" id="profile-email" name="email" readonly disabled>
+</div>
+<button type="submit" id="btn-save-profile" class="btn-primary">Save Changes</button>
+</form>
+</div>
+</section>
+<!-- Settings View -->
+<section id="view-settings" class="app-view hidden" aria-labelledby="settings-title">
+<div class="content-container">
+<h1 id="settings-title">Account Settings</h1>
+<div class="settings-group">
+<h2>Appearance</h2>
+<div class="setting-item">
+<label for="setting-theme">Theme</label>
+<select id="setting-theme" name="theme">
+<option value="system">System Default</option>
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
+</div>
+</div>
+<div class="settings-group">
+<h2>Notifications</h2>
+<div class="setting-item toggle-switch">
+<label for="setting-email-notif">Email Notifications</label>
+<input type="checkbox" id="setting-email-notif" name="email-notifications">
+</div>
+<div class="setting-item toggle-switch">
+<label for="setting-push-notif">Push Notifications</label>
+<input type="checkbox" id="setting-push-notif" name="push-notifications">
+</div>
+</div>
+<div class="settings-group">
+<h2>Security</h2>
+<button id="btn-change-password" class="btn-secondary" type="button">Change Password</button>
+<button id="btn-delete-account" class="btn-danger" type="button">Delete Account</button>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER ARCHITECTURE -->
+<footer id="app-footer" role="contentinfo">
+<div class="footer-content">
+<div class="footer-brand">
+<img src="assets/logos/sumnova-logo.png" alt="SumNova Logo" class="footer-logo">
+<span>SumNova</span>
+<p class="company-tagline">By Davonium Technologies</p>
+</div>
+<nav class="footer-nav" aria-label="Footer Navigation">
+<ul>
+<li><a href="#privacy-policy" data-route="privacy-policy">Privacy Policy</a></li>
+<li><a href="#terms-of-service" data-route="terms-of-service">Terms of Service</a></li>
+<li><a href="#contact" data-route="contact">Contact</a></li>
+<li><a href="#help" data-route="help">Help</a></li>
+</ul>
+</nav>
+</div>
+<div class="footer-copyright">
+<p>© <span id="copyright-year"></span> Davonium Technologies. All rights reserved.</p>
+</div>
+</footer>
+</div> <!-- End Application Shell -->
+<!-- JAVASCRIPT MODULES -->
+<!-- Scripts loaded in standard modular SaaS architecture format -->
+<script type="module" src="js/validator.js"></script>
+<script type="module" src="js/settings.js"></script>
+<script type="module" src="js/firestore.js"></script>
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/ai.js"></script>
+<script type="module" src="js/ui.js"></script>
+<script type="module" src="js/router.js"></script>
+<script type="module" src="js/app.js"></script>
+<!-- PWA Service Worker Registration Fallback -->
+<script>
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', () => {
+navigator.serviceWorker.register('service-worker.js')
+.then(registration => {
+console.log('SW registered: ', registration);
+})
+.catch(registrationError => {
+console.log('SW registration failed: ', registrationError);
+});
+});
+}
+document.getElementById('copyright-year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
-
