@@ -9,7 +9,7 @@
 import { initializeRouter, navigate } from './router.js';
 import { initTheme } from './theme.js';
 import { initializeNavigation } from './navigation.js';
-import { initUI } from './ui.js';
+import { initializeUI } from './ui.js';
 import { initSettings } from './settings.js';
 import { hideLoader } from './loader.js';
 
@@ -42,9 +42,9 @@ export function initializeApp() {
         }
 
         // 3. Initialize UI Helpers & Global Event Listeners
-        if (typeof initUI === 'function') {
-            initUI();
-        }
+        if (typeof initializeUI === 'function') {
+    initializeUI();
+}
 
         // 4. Initialize Settings Store & Preferences
         if (typeof initSettings === 'function') {
