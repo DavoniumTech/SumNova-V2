@@ -10,7 +10,7 @@ import { initializeTheme } from './theme.js';
 import { initializeNavigation, destroyNavigation } from './navigation.js';
 import { initializeUI } from './ui.js';
 import { initSettings } from './settings.js';
-import { initRouter } from './router.js';
+import { initializeRouter } from './router.js';
 import { showLoader, hideLoader } from './loader.js';
 
 // =========================================================
@@ -161,8 +161,8 @@ export function initializeApp() {
 
         // Stage 5: Router
         currentStage = 'Initializing router';
-        if (typeof initRouter === 'function') {
-            initRouter();
+        if (typeof initializeRouter === 'function') {
+            initializeRouter();
         }
 
         // Stage 6: Hiding loader
