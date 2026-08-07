@@ -56,10 +56,7 @@ export function initializeApp() {
             initializeRouter();
         }
 
-        // 6. Initialize Landing Page
-if (typeof initializeLanding === 'function') {
-    initializeLanding();
-}
+        
 
 // 7. Dismiss Loading Screen
 if (typeof hideLoader === 'function') {
