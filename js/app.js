@@ -56,9 +56,15 @@ export function initializeApp() {
             initializeRouter();
         }
 
-        // 6. Dismiss Loading Screen
-        if (typeof hideLoader === 'function') {
-            hideLoader();
+        // 6. Initialize Landing Page
+if (typeof initializeLanding === 'function') {
+    initializeLanding();
+}
+
+// 7. Dismiss Loading Screen
+if (typeof hideLoader === 'function') {
+    hideLoader();
+}
         } else {
             const loader = document.getElementById('loading-screen');
             if (loader) {
